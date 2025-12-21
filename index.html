@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="vi">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>Tin Tức - Trang Chủ</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<header class="site-header">
+		<div class="container">
+			<div class="logo">TIN TỨC</div>
+			<nav class="main-nav">
+					<!-- Header menu removed as requested; keep only search form -->
+				<form id="searchForm" class="search-form">
+					<input id="siteSearch" type="search" placeholder="Tìm bài viết" aria-label="Tìm bài viết">
+					<button type="submit">Tìm</button>
+					<button type="button" id="clearSearch" title="Xóa">X</button>
+				</form>
+                <!-- <div class="header-menu" aria-label="Menu chính">
+					<a href="index.html?cat=chính trị">Chính trị</a>
+					<a href="index.html?cat=thời sự">Thời sự</a>
+					<a href="index.html?cat=thế giới">Thế giới</a>
+					<a href="index.html?cat=kinh tế">Kinh tế</a>
+					<a href="admin.html">Quản trị</a>
+				</div> -->
+			</nav>
+		</div>
+	</header>
+
+	<!-- Top row: category bar (ticker moved below 'Tin Mới') -->
+	<div class="top-row">
+		<nav class="category-bar">
+			<div class="container">
+				<a href="index.html?cat=all" data-cat="all" class="home-icon">Tất cả</a>
+				<a href="index.html?cat=chính trị" data-cat="chính trị">Chính trị</a>
+				<a href="index.html?cat=thời sự" data-cat="thời sự">Thời sự</a>
+				<a href="index.html?cat=thế giới" data-cat="thế giới">Thế giới</a>
+				<a href="index.html?cat=kinh tế" data-cat="kinh tế">Kinh tế</a>
+				<a href="index.html?cat=đời sống" data-cat="đời sống">Đời sống</a>
+				<a href="index.html?cat=sức khỏe" data-cat="sức khỏe">Sức khỏe</a>
+				<a href="index.html?cat=giới trẻ" data-cat="giới trẻ">Giới trẻ</a>
+				<a href="index.html?cat=giáo dục" data-cat="giáo dục">Giáo dục</a>
+				<a href="index.html?cat=văn hóa" data-cat="văn hóa">Văn hóa</a>
+				<a href="index.html?cat=du lịch giải trí" data-cat="du lịch giải trí">Du lịch &amp; Giải trí</a>
+				<a href="index.html?cat=thể thao" data-cat="thể thao">Thể thao</a>
+			</div>
+		</nav>
+	</div>
+
+	<!-- Hero carousel -->
+	<section class="hero-wrap">
+		<div class="container">
+			<div id="heroCarousel" class="hero-carousel">
+				<!-- slides inserted by JS -->
+			</div>
+		</div>
+	</section>
+
+	<!-- category-bar moved into top-row for desktop layout -->
+
+	<main class="container layout">
+		<section class="content">
+            <div class="breaking-ticker in-content">Tin nóng: <span id="breakingList">...</span></div>
+			<h2 class="section-title">Tin Mới</h2>
+			
+			<div id="articles" class="article-list"></div>
+			
+			<!-- Category grid: 4 main boxes under Tin Mới -->
+			<section class="cat-grid-section">
+				<h2 class="section-title">Chuyên Mục Nổi Bật</h2>
+				<div id="categoryGrid" class="category-grid">
+					<!-- JavaScript will populate 4 boxes here -->
+				</div>
+			</section>
+		</section>
+
+		<aside class="sidebar">
+			<div class="widget">
+				<h3>Bài mới</h3>
+				<ul id="latest" class="latest-list"></ul>
+			</div>
+		</aside>
+	</main>
+
+	<footer class="site-footer">
+		<div class="container">© 2025 Tin Tức </div>
+	</footer>
+
+	<script src="data.js"></script>
+	<script src="scripts.js"></script>
+</body>
+</html>
+

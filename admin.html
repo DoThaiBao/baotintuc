@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Quản trị - Thêm bài viết</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="logo">TIN TỨC - Quản trị</div>
+      <nav class="main-nav">
+        <a href="index.html">Trang chủ</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container admin">
+    <h2>Thêm / Cập nhật bài viết (demo phía client)</h2>
+    <form id="articleForm" class="article-form">
+      <label>Tiêu đề<input name="title" required placeholder="Tiêu đề bài viết"></label>
+      <label>Chuyên mục
+        <select name="category" id="categorySelect">
+          <option value="">-- Chọn chuyên mục --</option>
+          <option>Chính trị</option>
+          <option>Thời sự</option>
+          <option>Thế giới</option>
+          <option>Kinh tế</option>
+          <option>Đời sống</option>
+          <option>Sức khỏe</option>
+          <option>Giới trẻ</option>
+          <option>Giáo dục</option>
+          <option>Văn hóa</option>
+          <option>Du lịch & Giải trí</option>
+          <option>Thể thao</option>
+        </select>
+      </label>
+      <label>Upload ảnh (hoặc URL)
+        <input id="imageFile" name="imageFile" type="file" accept="image/*">
+      </label>
+      <label>Hoặc Image URL<input id="imageUrl" name="image" placeholder="https://... (tùy chọn)"></label>
+      <label>Tóm tắt<textarea name="excerpt" placeholder="Đoạn tóm tắt ngắn"></textarea></label>
+      <label>Nội dung<textarea name="content" rows="8" placeholder="Nội dung đầy đủ (hỗ trợ HTML)"></textarea></label>
+      <label style="display:block;margin-top:8px"><input type="checkbox" id="featured" name="featured"> Nổi bật (hiện trên carousel)</label>
+      <button type="submit">Lưu bài viết</button>
+    </form>
+    
+    <div id="adminManage" style="margin-top:18px">
+      <h3>Quản lý bài viết</h3>
+      <p>Danh sách bài đang có (bấm Xóa để xoá một bài):</p>
+      <div id="adminList"></div>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">© 2025 Tin Tức - Demo</div>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="scripts.js"></script>
+</body>
+</html>

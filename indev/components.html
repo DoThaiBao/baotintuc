@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>InDev - Components</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <div class="container">
+    <h2>InDev: Thành phần giao diện</h2>
+    <section>
+      <h3>Card component</h3>
+      <div id="cards"></div>
+    </section>
+    <p><a href="../index.html">Quay về trang chủ</a></p>
+  </div>
+  <script src="../data.js"></script>
+  <script>
+    const cardsEl = document.getElementById('cards');
+    const items = JSON.parse(localStorage.getItem('articles')||'[]');
+    cardsEl.innerHTML = items.map(a=>`<div style="border:1px solid #ddd;padding:12px;margin-bottom:12px"><img src="${a.image}" style="width:100%;max-height:160px;object-fit:cover"><h4><a href="../post.html?id=${a.id}">${a.title}</a></h4><div class="meta">${a.category} • ${a.date}</div><p>${a.excerpt}</p></div>`).join('');
+  </script>
+</body>
+</html>

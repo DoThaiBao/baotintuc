@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>InDev - Pagination</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <div class="container">
+    <h2>InDev: Phân trang (demo)</h2>
+    <div id="page-list"></div>
+    <div id="pager" style="margin-top:12px"></div>
+    <p><a href="../index.html">Quay về trang chủ</a></p>
+  </div>
+  <script src="../data.js"></script>
+  <script>
+    const perPage = 2;
+    let page = 1;
+    function render(){
+      const all = JSON.parse(localStorage.getItem('articles')||'[]');
+      const start = (page-1)*perPage;
+      const slice = all.slice(start, start+perPage);
+      document.getElementById('page-list').innerHTML = slice.map(a=>`<div class="item"><h3><a href="../post.html?id=${a.id}">${a.title}</a></h3><div class="meta">${a.date}</div><p>${a.excerpt}</p></div>`).join('');
+      const pages = Math.ceil(all.length/perPage)||1;
+      document.getElementById('pager').innerHTML = Array.from({length:pages},(_,i)=>`<button data-p="${i+1}" style="margin-right:6px">${i+1}</button>`).join('');
+      document.querySelectorAll('#pager button').forEach(b=>b.addEventListener('click', ()=>{page = Number(b.dataset.p); render();}));
+    }
+    render();
+  </script>
+</body>
+</html>
