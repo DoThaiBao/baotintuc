@@ -79,6 +79,17 @@
             font-weight: bold;
             border-bottom: 2px solid #d32f2f;
         }
+
+        /* [MỚI] Style cho thẻ Category hiển thị ở tin bài */
+        .category-tag {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase; /* Chữ in hoa */
+            color: #d32f2f; /* Màu đỏ nổi bật */
+            margin-bottom: 5px;
+            letter-spacing: 0.5px;
+        }
     </style>
 </head>
 
@@ -130,6 +141,7 @@
                                 <div class="image-wrap"></div>
                             </a>
                             <div class="article-info">
+                                <span class="category-tag"></span>
                                 <h2><a class="article-link" href="#"></a></h2>
                                 <p></p>
                             </div>
@@ -137,14 +149,17 @@
 
                         <div class="sub-articles">
                             <div class="sub-item" data-id="2">
+                                <span class="category-tag"></span>
                                 <h3><a href="#"></a></h3>
                                 <p></p>
                             </div>
                             <div class="sub-item" data-id="3">
+                                <span class="category-tag"></span>
                                 <h3><a href="#"></a></h3>
                                 <p></p>
                             </div>
                             <div class="sub-item" data-id="4">
+                                <span class="category-tag"></span>
                                 <h3><a href="#"></a></h3>
                                 <p></p>
                             </div>
@@ -174,21 +189,13 @@
     <footer class="site-footer">
         <div class="container">
            <p>NHỊP SỐNG HUẾ ONLINE</p>
-
             <p>Cơ quan chủ quản: Sở Du lịch Thành phố Huế</p>
-
             <p>📍 Địa chỉ trụ sở cơ quan chủ quản: Tầng 4, Tòa nhà 4 tầng – Khu hành chính công, đường Võ Nguyên Giáp, phường Xuân Phú, thành phố Huế, tỉnh Thừa Thiên Huế, Việt Nam</p>
-
             <p>📞 Điện thoại tòa soạn: 0xxx.xxx.xxx</p>
-
             <p>📧 Email: nhipsonghue@gmail.com</p>
-
             <p>🌐 Website: www.nhipsonghue.vn</p>
-
             <p>© 2025 Nhịp Sống Huế.</p>
-
             <p>Mọi quyền được bảo lưu theo pháp luật Việt Nam.</p>
-
             <p>Nghiêm cấm sao chép, trích dẫn khi chưa được sự cho phép bằng văn bản của tòa soạn.</p>
         </div>
     </footer>
@@ -197,8 +204,8 @@
         document.addEventListener("DOMContentLoaded", function() {
 
             // --- 1. CONFIG & RESET VERSION ---
-            // Đã đổi lên 1.4 để ép máy người dùng xóa cache cũ lấy code mới
-            const CURRENT_VERSION = '1.4'; 
+            // Đã đổi lên 1.5 để ép cập nhật code mới
+            const CURRENT_VERSION = '1.5'; 
             if (localStorage.getItem('data_version') !== CURRENT_VERSION) {
                 localStorage.removeItem('articles');
                 localStorage.setItem('data_version', CURRENT_VERSION);
@@ -270,6 +277,10 @@
 
                     const mainLink = main.querySelector('a.article-link');
                     if(mainLink) mainLink.href = `post.html?id=${latestPost.id}`;
+
+                    // [MỚI] Điền Category vào thẻ span
+                    const catTag = main.querySelector('.category-tag');
+                    if(catTag) catTag.textContent = latestPost.category || 'Tin tức';
                 }
 
                 // Tin Phụ (3 bài tiếp theo)
@@ -278,6 +289,11 @@
                     const subData = displayList[index + 1];
                     if (subData) {
                         el.style.display = 'block';
+                        
+                        // [MỚI] Điền Category vào thẻ span
+                        const catTag = el.querySelector('.category-tag');
+                        if(catTag) catTag.textContent = subData.category || 'Tin tức';
+
                         const title = el.querySelector('h3 a');
                         if(title) { title.textContent = subData.title; title.href = `post.html?id=${subData.id}`; }
                         const p = el.querySelector('p');
