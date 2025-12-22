@@ -2,162 +2,336 @@
 <html lang="vi">
 
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>Tin Tức - Trang Chủ</title>
-	<link rel="stylesheet" href="styles.css">
-	<!-- Thêm CSS để ảnh tự động cắt phù hợp (responsive crop) -->
-	<style>
-		.main-article .image-wrap {
-			width: 100%;
-			/* 16:9 ratio; thay đổi padding-top để điều chỉnh tỉ lệ nếu cần */
-			padding-top: 56.25%;
-			position: relative;
-			overflow: hidden;
-			border-radius: 6px;
-			background: #eee;
-		}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Tin Tức - Trang Chủ</title>
+    <link rel="stylesheet" href="styles.css">
+    
+    <style>
+        /* 1. CSS Cắt ảnh tỉ lệ 16:9 cho bài chính */
+        .main-article .image-wrap {
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 */
+            position: relative;
+            overflow: hidden;
+            border-radius: 6px;
+            background: #eee;
+        }
 
-		.main-article .image-wrap img {
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			object-fit: cover;
-			object-position: center;
-			display: block;
-		}
-	</style>
+        .main-article .image-wrap img {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* 2. CSS Cho Grid 4 ô Chuyên mục */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 4 cột */
+            gap: 15px;
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+
+        .cat-box {
+            position: relative;
+            display: block;
+            border-radius: 8px;
+            overflow: hidden;
+            aspect-ratio: 1/1; /* Hình vuông */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .cat-box img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .cat-box:hover img {
+            transform: scale(1.1); /* Phóng to khi di chuột */
+        }
+
+        .cat-overlay {
+            position: absolute;
+            bottom: 0; left: 0; width: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            padding: 15px 10px;
+            text-align: center;
+        }
+
+        .cat-overlay h3 {
+            color: #fff; margin: 0;
+            font-size: 16px; text-transform: uppercase;
+            font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        /* Mobile: Chuyển thành 2 cột */
+        @media (max-width: 768px) {
+            .category-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        
+        /* Màu active cho menu */
+        .category-bar a.active {
+            color: #d32f2f; /* Màu đỏ */
+            font-weight: bold;
+            border-bottom: 2px solid #d32f2f;
+        }
+    </style>
 </head>
 
 <body>
-	<header class="site-header">
-		<div class="container">
-			<div class="logo">TIN TỨC</div>
-			<nav class="main-nav">
-				<!-- Header menu removed as requested; keep only search form -->
-				<form id="searchForm" class="search-form">
-					<input id="siteSearch" type="search" placeholder="Tìm bài viết" aria-label="Tìm bài viết">
-					<button type="submit">Tìm</button>
-					<button type="button" id="clearSearch" title="Xóa">X</button>
-				</form>
-				<!-- <div class="header-menu" aria-label="Menu chính">
-					<a href="index.html?cat=chính trị">Chính trị</a>
-					<a href="index.html?cat=thời sự">Thời sự</a>
-					<a href="index.html?cat=thế giới">Thế giới</a>
-					<a href="index.html?cat=kinh tế">Kinh tế</a>
-					<a href="admin.html">Quản trị</a>
-				</div> -->
-			</nav>
-		</div>
-	</header>
+    <header class="site-header">
+        <div class="container">
+            <div class="logo">NHỊP SỐNG HUẾ</div>
+            <nav class="main-nav">
+                <form id="searchForm" class="search-form">
+                    <input id="siteSearch" type="search" placeholder="Tìm bài viết" aria-label="Tìm bài viết">
+                    <button type="submit">Tìm</button>
+                    <button type="button" id="clearSearch" title="Xóa">X</button>
+                </form>
+            </nav>
+        </div>
+    </header>
 
-	<!-- Top row: category bar (ticker moved below 'Tin Mới') -->
-	<div class="top-row">
-		<nav class="category-bar">
-			<div class="container">
-				<a href="index.html?cat=all" data-cat="all" class="home-icon">Tất cả</a>
+    <div class="top-row">
+        <nav class="category-bar">
+            <div class="container">
+                <a href="index.html?cat=all" data-cat="all" class="home-icon">Tất cả</a>
+                <a href="index.html?cat=thời sự" data-cat="thời sự">Thời sự</a>
+                <a href="index.html?cat=xã hội" data-cat="xã hội">Xã hội</a>
+                <a href="index.html?cat=kinh tế" data-cat="kinh tế">Kinh tế</a>
+                <a href="index.html?cat=đời sống" data-cat="đời sống">Đời sống</a>
+                <a href="index.html?cat=sức khỏe" data-cat="sức khỏe">Sức khỏe</a>
+                <a href="index.html?cat=du lịch" data-cat="du lịch">Du lịch</a>
+                <a href="index.html?cat=văn hóa" data-cat="văn hóa">Văn hóa</a>
+                <a href="index.html?cat=giải trí" data-cat="giải trí">Giải trí</a>
+            </div>
+        </nav>
+    </div>
 
-				<a href="index.html?cat=thời sự" data-cat="thời sự">Thời sự</a>
-				<a href="index.html?cat=thế giới" data-cat="thế giới">xã hội</a>
-				<a href="index.html?cat=kinh tế" data-cat="kinh tế">Kinh tế</a>
-				<a href="index.html?cat=đời sống" data-cat="đời sống">Đời sống</a>
-				<a href="index.html?cat=sức khỏe" data-cat="sức khỏe">Sức khỏe</a>
-				<a href="index.html?cat=giới trẻ" data-cat="giới trẻ">du lịch</a>
-						<a href="index.html?cat=giáo dục" data-cat="giáo dục">văn hóa</a				<a href="index.html?cat=văn hóa" data-cat="văn hóa">Văn hóa</a>
-				<a href="index.html?cat=du lịch giải trí" data-cat="du lịch giải trí">Du lịch &amp; Giải trí</a>
-			</div>
-		</nav>
-	</div>
+    <section class="hero-wrap">
+        <div class="container">
+            <div id="heroCarousel" class="hero-carousel">
+                </div>
+        </div>
+    </section>
 
-	<!-- Hero carousel -->
-	<section class="hero-wrap">
-		<div class="container">
-			<div id="heroCarousel" class="hero-carousel">
-				<!-- slides inserted by JS -->
-			</div>
-		</div>
+    <main class="container layout">
+        <section class="content">
+            <div class="container">
+                <main class="main-content">
+                    <div class="featured-news">
+                        <div class="main-article" data-id="1">
+                            <img src="" alt="Tin chính">
+                            <a class="article-link" href="#" aria-label="Đọc bài chính">
+                                <div class="image-wrap"></div>
+                            </a>
+                            <div class="article-info">
+                                <h2><a class="article-link" href="#"></a></h2>
+                                <p></p>
+                            </div>
+                        </div>
 
-	</section>
+                        <div class="sub-articles">
+                            <div class="sub-item" data-id="2">
+                                <h3><a href="#"></a></h3>
+                                <p></p>
+                            </div>
+                            <div class="sub-item" data-id="3">
+                                <h3><a href="#"></a></h3>
+                                <p></p>
+                            </div>
+                            <div class="sub-item" data-id="4">
+                                <h3><a href="#"></a></h3>
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
 
-	<!-- category-bar moved into top-row for desktop layout -->
+            <section class="cat-grid-section">
+                <h2 class="section-title" style="margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px;">Chuyên Mục Nổi Bật</h2>
+                <div id="categoryGrid" class="category-grid">
+                    </div>
+            </section>
 
-	<main class="container layout">
-		<section class="content">
-			<div class="container">
-				<main class="main-content">
-					<div class="featured-news">
-						<div class="main-article" data-id="1">
-							<img src="" alt="Tin chính">
-							<a class="article-link" href="#" aria-label="Đọc bài chính">
-								<div class="image-wrap">
-									
-								</div>
-							</a>
-							<div class="article-info">
-								<h2><a class="article-link" href="#"></a></h2>
-								<p></p>
-							</div>
-						</div>
+            <h2 class="section-title">Tiêu điểm</h2>
+            <div id="articles" class="article-list"></div>
+        </section>
 
-						<div class="sub-articles">
-							<div class="sub-item" data-id="2">
-								<h3><a href="#"></a></h3>
-								<p></p>
-							</div>
-							<div class="sub-item" data-id="3">
-								<h3><a href="#"></a></h3>
-								<p></p>
-							</div>
-							<div class="sub-item" data-id="4">
-								<h3><a href="#"></a></h3>
-								<p></p>
-							</div>
-						</div>
-					</div>
-				</main>
-			</div>
-			<h2 class="section-title">Tiêu điểm</h2>
+        <aside class="sidebar">
+            <div class="widget">
+                <h3>Tin mới</h3>
+                <ul id="latest" class="latest-list"></ul>
+            </div>
+        </aside>
+    </main>
 
-			<div id="articles" class="article-list"></div>
+    <footer class="site-footer">
+        <div class="container">
+           <p>NHỊP SỐNG HUẾ ONLINE</p>
 
-			<!-- Category grid: 4 main boxes under Tin Mới -->
-			<section class="cat-grid-section">
-				<h2 class="section-title">Chuyên Mục Nổi Bật</h2>
-				<div id="categoryGrid" class="category-grid">
-					<!-- JavaScript will populate 4 boxes here -->
-				</div>
-			</section>
-		</section>
+            <p>Cơ quan chủ quản: Sở Du lịch Thành phố Huế</p>
 
-		<aside class="sidebar">
-			<div class="widget">
-				<h3>Tin mới</h3>
-				<ul id="latest" class="latest-list"></ul>
-			</div>
-		</aside>
-	</main>
+            <p>📍 Địa chỉ trụ sở cơ quan chủ quản: Tầng 4, Tòa nhà 4 tầng – Khu hành chính công, đường Võ Nguyên Giáp, phường Xuân Phú, thành phố Huế, tỉnh Thừa Thiên Huế, Việt Nam</p>
 
-	<footer class="site-footer">
-		<div class="container">
-			<p>NHỊP SỐNG HUẾ </p>
-			<p>Cơ quan chủ quản: Sở Du lịch Thành phố Huế</p>
-			<p>📍 Địa chỉ trụ sở cơ quan chủ quản: Tầng 4, Tòa nhà 4 tầng – Khu hành chính công, đường Võ Nguyên Giáp, phường Xuân Phú, thành phố Huế, tỉnh Thừa Thiên Huế, Việt Nam</p>
-			<p>📞 Điện thoại tòa soạn: 0xxx.xxx.xxx</p>
-			<p>📧 Email: nhipsonghue@gmail.com</p>
-			<p>🌐 Website: www.nhipsonghue.vn</p>
-			<p>© 2025 Nhịp Sống Huế.</p>
-			<p>Mọi quyền được bảo lưu theo pháp luật Việt Nam.</p>
-			<p>Nghiêm cấm sao chép, trích dẫn khi chưa được sự cho phép bằng văn bản của tòa soạn.</p>
-		</div>
-	</footer>
+            <p>📞 Điện thoại tòa soạn: 0xxx.xxx.xxx</p>
 
-	<script src="data.js"></script>
-	<script src="scripts.js"></script>
+            <p>📧 Email: nhipsonghue@gmail.com</p>
 
-	<!-- Script: populate featured + sub-items from data.js (expects global `articles` array or SAMPLE_ARTICLES) -->
+            <p>🌐 Website: www.nhipsonghue.vn</p>
 
+            <p>© 2025 Nhịp Sống Huế.</p>
+
+            <p>Mọi quyền được bảo lưu theo pháp luật Việt Nam.</p>
+
+            <p>Nghiêm cấm sao chép, trích dẫn khi chưa được sự cho phép bằng văn bản của tòa soạn.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+            // --- 1. CONFIG & RESET VERSION ---
+            // Đã đổi lên 1.4 để ép máy người dùng xóa cache cũ lấy code mới
+            const CURRENT_VERSION = '1.4'; 
+            if (localStorage.getItem('data_version') !== CURRENT_VERSION) {
+                localStorage.removeItem('articles');
+                localStorage.setItem('data_version', CURRENT_VERSION);
+                location.reload();
+                return;
+            }
+
+            // --- 2. LẤY DỮ LIỆU GỐC (RAW DATA) ---
+            let fullList = []; // Kho chứa TOÀN BỘ dữ liệu
+            try {
+                const local = JSON.parse(localStorage.getItem('articles') || '[]');
+                if (Array.isArray(local) && local.length > 0) fullList = local;
+            } catch (e) {}
+
+            if (fullList.length === 0) {
+                if (typeof window.SAMPLE_ARTICLES !== 'undefined') fullList = window.SAMPLE_ARTICLES;
+                else if (typeof FALLBACK_DATA !== 'undefined') fullList = FALLBACK_DATA;
+            }
+
+            // --- 3. THUẬT TOÁN LỌC TIN BÀI ---
+            const urlParams = new URLSearchParams(window.location.search);
+            const currentCat = urlParams.get('cat');
+            const normalize = (str) => str ? str.toLowerCase().trim() : '';
+            const targetCat = normalize(currentCat);
+
+            // Tạo danh sách hiển thị (Filtered List)
+            let displayList = [];
+            if (!targetCat || targetCat === 'all') {
+                displayList = fullList; // Lấy hết
+            } else {
+                displayList = fullList.filter(item => normalize(item.category) === targetCat); // Lọc
+            }
+            displayList.sort((a, b) => b.id - a.id); // Sắp xếp mới nhất
+
+
+            // --- 4. RENDER GIAO DIỆN CHÍNH ---
+            
+            // 4.1. Active Menu
+            const menuLinks = document.querySelectorAll('.category-bar a');
+            menuLinks.forEach(link => {
+                const linkCat = normalize(link.getAttribute('data-cat'));
+                if (targetCat === linkCat || (!targetCat && linkCat === 'all')) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+
+            // 4.2. Render Tin Chính & Tin Phụ
+            const contentSection = document.querySelector('.main-content');
+            
+            if (displayList.length === 0) {
+                // Không có bài nào
+                document.querySelector('.featured-news').style.display = 'none';
+                document.getElementById('articles').innerHTML = `<p style="padding:20px">Không tìm thấy bài viết nào.</p>`;
+            } else {
+                // Tin Chính (Bài đầu tiên)
+                const latestPost = displayList[0];
+                const main = document.querySelector('.main-article');
+                if (main && latestPost) {
+                    const img = main.querySelector('img');
+                    if(img) img.src = latestPost.image || 'https://placehold.co/800x450';
+                    
+                    const title = main.querySelector('.article-info h2 a');
+                    if(title) { title.textContent = latestPost.title; title.href = `post.html?id=${latestPost.id}`; }
+                    
+                    const desc = main.querySelector('.article-info p');
+                    if(desc) desc.textContent = latestPost.excerpt;
+
+                    const mainLink = main.querySelector('a.article-link');
+                    if(mainLink) mainLink.href = `post.html?id=${latestPost.id}`;
+                }
+
+                // Tin Phụ (3 bài tiếp theo)
+                const subItems = document.querySelectorAll('.sub-item');
+                subItems.forEach((el, index) => {
+                    const subData = displayList[index + 1];
+                    if (subData) {
+                        el.style.display = 'block';
+                        const title = el.querySelector('h3 a');
+                        if(title) { title.textContent = subData.title; title.href = `post.html?id=${subData.id}`; }
+                        const p = el.querySelector('p');
+                        if(p) p.textContent = subData.excerpt;
+                    } else {
+                        el.style.display = 'none';
+                    }
+                });
+
+                // List tin bên dưới (Từ bài thứ 5 trở đi)
+                const listContainer = document.getElementById('articles');
+                if(listContainer) {
+                    listContainer.innerHTML = '';
+                    const remainingPosts = displayList.slice(4);
+                    remainingPosts.forEach(post => {
+                        listContainer.innerHTML += `
+                            <div class="article-item">
+                                <img src="${post.image}" alt="${post.title}" style="width:120px; height:80px; object-fit:cover; float:left; margin-right:15px; border-radius:4px;">
+                                <h4 style="margin:0 0 5px 0"><a href="post.html?id=${post.id}" style="text-decoration:none; color:#333;">${post.title}</a></h4>
+                                <p style="font-size:14px; color:#666; margin:0;">${post.excerpt.substring(0, 100)}...</p>
+                                <div style="clear:both"></div>
+                            </div>
+                            <hr style="border:0; border-top:1px solid #eee; margin:15px 0;">
+                        `;
+                    });
+                }
+            }
+
+            // --- 5. RENDER CATEGORY GRID (MỚI THÊM) ---
+            const catGrid = document.getElementById('categoryGrid');
+            if (catGrid) {
+                // Danh sách chuyên mục muốn hiển thị
+                const categoriesToShow = ['Du lịch', 'Ẩm thực', 'Văn hóa', 'Giải trí']; 
+                catGrid.innerHTML = ''; 
+
+                categoriesToShow.forEach(catName => {
+                    // Tìm ảnh đại diện từ fullList (Dữ liệu gốc) để lúc nào cũng có ảnh
+                    const foundPost = fullList.find(p => p.category && normalize(p.category) === normalize(catName));
+                    const bgImage = foundPost ? foundPost.image : 'https://placehold.co/300x300/eee/333?text=' + catName;
+                    
+                    const html = `
+                        <a href="index.html?cat=${catName.toLowerCase()}" class="cat-box">
+                            <img src="${bgImage}" alt="${catName}">
+                            <div class="cat-overlay">
+                                <h3>${catName}</h3>
+                            </div>
+                        </a>
+                    `;
+                    catGrid.innerHTML += html;
+                });
+            }
+        });
+    </script>
+    <script src="data.js"></script>
+    <script src="scripts.js"></script>
 </body>
-
 </html>

@@ -301,91 +301,70 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   }
 });
-document.addEventListener("DOMContentLoaded", function() {
-        
-        // --- 0. TỰ ĐỘNG FIX LỖI DATA CŨ (CHẠY 1 LẦN DUY NHẤT) ---
-        // Mỗi khi bạn sửa code lớn hoặc thay đổi ảnh, hãy đổi số phiên bản này (ví dụ: '1.0' -> '1.1')
-        const CURRENT_VERSION = '1.2'; 
+// ... (Đoạn code check version cũ giữ nguyên) ...
 
-        // Kiểm tra nếu máy người dùng chưa có phiên bản này
-        if (localStorage.getItem('data_version') !== CURRENT_VERSION) {
-            console.log("Phát hiện dữ liệu cũ, đang dọn dẹp...");
-            
-            // Xóa danh sách bài viết cũ đi
-            localStorage.removeItem('articles'); 
-            
-            // Lưu lại phiên bản mới để lần sau không bị xóa nữa
-            localStorage.setItem('data_version', CURRENT_VERSION); 
-            
-            // Tải lại trang ngay lập tức để nạp dữ liệu chuẩn từ data.js
-            location.reload(); 
-            return; // Dừng code tại đây để chờ reload
-        }
+// --- 1. DỮ LIỆU DỰ PHÒNG ---
+let list = [];
+try {
+    const local = JSON.parse(localStorage.getItem('articles') || '[]');
+    if (Array.isArray(local) && local.length > 0) list = local;
+} catch (e) {}
 
-        // --- 1. DỮ LIỆU DỰ PHÒNG ---
-        const FALLBACK_DATA = [{
-            id: 999,
-            title: "Bài mẫu: Đã sửa lỗi hiển thị ảnh",
-            image: "https://placehold.co/800x450/2980b9/ffffff?text=Tin+Moi",
-            excerpt: "Nội dung mẫu để kiểm tra giao diện."
-        }];
+if (list.length === 0) {
+    if (window.SAMPLE_ARTICLES) list = window.SAMPLE_ARTICLES;
+    else if (typeof FALLBACK_DATA !== 'undefined') list = FALLBACK_DATA; // Check kỹ biến này
+}
 
-        let list = [];
-        try {
-            const local = JSON.parse(localStorage.getItem('articles') || '[]');
-            if (Array.isArray(local) && local.length > 0) list = local;
-        } catch (e) {}
+// ============================================================
+// [MỚI] BẮT ĐẦU ĐOẠN XỬ LÝ CATEGORY TẠI ĐÂY
+// ============================================================
 
-        if (list.length === 0) {
-            if (window.SAMPLE_ARTICLES) list = window.SAMPLE_ARTICLES;
-            else list = FALLBACK_DATA;
-        }
+// 1. Lấy category từ URL (ví dụ: index.html?cat=thời sự -> lấy được "thời sự")
+const urlParams = new URLSearchParams(window.location.search);
+const currentCat = urlParams.get('cat'); // Biến này chứa tên danh mục
 
-        // Sắp xếp bài mới nhất lên đầu
-        list.sort((a, b) => b.id - a.id);
-        const latestPost = list[0]; 
+// 2. Tô màu đỏ cho Menu (Highlight)
+const menuLinks = document.querySelectorAll('.category-bar a');
+menuLinks.forEach(link => {
+    // Lấy giá trị data-cat của thẻ a
+    const linkCat = link.getAttribute('data-cat');
+    
+    // Nếu URL không có cat thì mặc định tô màu cái "Tất cả"
+    if (!currentCat && linkCat === 'all') {
+        link.classList.add('active');
+    }
+    // So sánh (chuyển về chữ thường để tránh lỗi hoa/thường)
+    else if (currentCat && linkCat && linkCat.toLowerCase() === currentCat.toLowerCase()) {
+        link.classList.add('active');
+    } else {
+        link.classList.remove('active');
+    }
+});
 
-        // --- 2. XỬ LÝ BÀI CHÍNH (CÓ ẢNH) ---
-        const main = document.querySelector('.main-article');
-        if (main && latestPost) {
-            const img = main.querySelector('img');
-            const title = main.querySelector('.article-info h2 a');
-            const desc = main.querySelector('.article-info p');
-            const links = main.querySelectorAll('a');
-
-            if (img) {
-                img.removeAttribute('src'); 
-                img.src = latestPost.image; 
-                img.onerror = function() { this.src = 'https://placehold.co/800x450?text=Loi+Anh'; };
-                img.style.display = 'block';
-                // img.style.width = '50%'; // Đã xử lý bằng CSS
-            }
-
-            if (title) title.textContent = latestPost.title;
-            if (desc) desc.textContent = latestPost.excerpt;
-            links.forEach(a => a.href = `post.html?id=${latestPost.id}`);
-        }
-
-        // --- 3. XỬ LÝ TIN CON (CHỈ CHỮ) ---
-        const subItems = document.querySelectorAll('.sub-item');
-        subItems.forEach((el, index) => {
-            // Lấy bài viết tiếp theo (index + 1)
-            const subData = list[index + 1];
-
-            if (subData) {
-                const title = el.querySelector('h3 a');
-                const desc = el.querySelector('p');
-                
-                if (title) {
-                    title.textContent = subData.title;
-                    title.href = `post.html?id=${subData.id}`;
-                }
-                if (desc) desc.textContent = subData.excerpt;
-
-                const imgWrap = el.querySelector('.image-wrap');
-                if (imgWrap) imgWrap.style.display = 'none';
-            } else {
-                el.style.display = 'none';
-            }
-        });
+// 3. Lọc danh sách bài viết (Filter Data)
+if (currentCat && currentCat !== 'all') {
+    // Lọc mảng list, chỉ giữ lại bài có category trùng khớp
+    list = list.filter(item => {
+        // Kiểm tra xem bài viết có thuộc tính category không
+        if (!item.category) return false;
+        // So sánh tương đối (dùng includes hoặc ===)
+        return item.category.toLowerCase() === currentCat.toLowerCase();
     });
+}
+
+// ============================================================
+// [MỚI] KẾT THÚC ĐOẠN XỬ LÝ
+// ============================================================
+
+
+// Sắp xếp bài mới nhất lên đầu (Giữ nguyên code cũ)
+list.sort((a, b) => b.id - a.id);
+
+// Kiểm tra nếu sau khi lọc mà không còn bài nào (list rỗng)
+if (list.length === 0) {
+    document.querySelector('.main-content').innerHTML = "<p style='padding:20px'>Chưa có bài viết nào thuộc mục này.</p>";
+} else {
+    // ... Code render bài viết cũ của bạn chạy tiếp ở dưới ...
+    const latestPost = list[0]; 
+    // ...
+}

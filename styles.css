@@ -514,3 +514,9 @@ body {
         font-size: 14px; /* Chữ thông tin nhỏ lại */
     }
 }
+/* Khi link có class 'active' thì chuyển màu đỏ */
+.category-bar a.active {
+    color: red !important; /* Màu đỏ */
+    font-weight: bold;
+    border-bottom: 2px solid red; /* Gạch chân cho đẹp (tùy chọn) */
+}
