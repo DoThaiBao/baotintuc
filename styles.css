@@ -422,3 +422,95 @@ body {
     width: 100%;
     color: #000000;            /* Màu sáng hơn bản cũ */
 }
+/* --- CSS CHO MOBILE (Màn hình nhỏ hơn 768px) --- */
+@media (max-width: 768px) {
+    
+    /* 1. Reset Container & Header */
+    .container {
+        padding: 10px 15px; /* Giảm lề 2 bên cho rộng rãi */
+    }
+    
+    .site-header .container {
+        flex-direction: column; /* Logo trên, Search dưới */
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .search-form {
+        width: 100%; /* Ô tìm kiếm full màn hình */
+    }
+    
+    .search-form input[type="search"] {
+        width: 100%;
+        flex: 1;
+    }
+
+    /* 2. Reset Bố cục chính (Layout) */
+    .layout {
+        flex-direction: column !important; /* Xếp dọc */
+        gap: 30px;
+    }
+
+    .main-content {
+        flex: none !important;
+        width: 100%;
+    }
+
+    /* 3. Xử lý Sidebar (Tin mới) */
+    .sidebar {
+        flex: none !important;
+        width: 100% !important;
+        max-width: 100% !important; /* Bỏ giới hạn chiều rộng */
+        border-left: none;
+        border-top: 4px solid #eee; /* Thêm đường kẻ trên để ngăn cách */
+        padding-left: 0;
+        padding-top: 20px;
+    }
+
+    /* 4. Bài viết chính (Main Article) - Quan trọng */
+    .main-article {
+        flex-direction: column !important; /* Ảnh trên chữ dưới */
+        margin-bottom: 20px !important;
+        align-items: flex-start !important;
+    }
+
+    .main-article .image-wrap {
+        width: 100% !important;
+        max-width: 100% !important; /* Ảnh bung full chiều ngang */
+        height: 220px !important;   /* Giảm chiều cao cho vừa mắt */
+        margin-bottom: 10px;
+    }
+
+    .article-info h2 {
+        font-size: 20px; /* Giảm cỡ chữ tiêu đề chút */
+    }
+
+    /* 5. Các lưới tin phụ & Chuyên mục */
+    .sub-articles {
+        grid-template-columns: 1fr; /* Chuyển về 1 cột dọc */
+        gap: 15px;
+    }
+
+    .category-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 cột trên điện thoại */
+        gap: 10px;
+    }
+    
+    /* Nếu màn hình quá nhỏ (dưới 400px) thì để 1 cột */
+    @media (max-width: 400px) {
+        .category-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* 6. Footer Mobile */
+    .site-footer {
+        padding: 30px 0;
+    }
+    .site-footer p:first-child {
+        font-size: 20px; /* Tên báo nhỏ lại chút */
+    }
+    .site-footer p {
+        font-size: 14px; /* Chữ thông tin nhỏ lại */
+    }
+}
