@@ -302,6 +302,26 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 document.addEventListener("DOMContentLoaded", function() {
+        
+        // --- 0. TỰ ĐỘNG FIX LỖI DATA CŨ (CHẠY 1 LẦN DUY NHẤT) ---
+        // Mỗi khi bạn sửa code lớn hoặc thay đổi ảnh, hãy đổi số phiên bản này (ví dụ: '1.0' -> '1.1')
+        const CURRENT_VERSION = '1.2'; 
+
+        // Kiểm tra nếu máy người dùng chưa có phiên bản này
+        if (localStorage.getItem('data_version') !== CURRENT_VERSION) {
+            console.log("Phát hiện dữ liệu cũ, đang dọn dẹp...");
+            
+            // Xóa danh sách bài viết cũ đi
+            localStorage.removeItem('articles'); 
+            
+            // Lưu lại phiên bản mới để lần sau không bị xóa nữa
+            localStorage.setItem('data_version', CURRENT_VERSION); 
+            
+            // Tải lại trang ngay lập tức để nạp dữ liệu chuẩn từ data.js
+            location.reload(); 
+            return; // Dừng code tại đây để chờ reload
+        }
+
         // --- 1. DỮ LIỆU DỰ PHÒNG ---
         const FALLBACK_DATA = [{
             id: 999,
@@ -337,11 +357,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 img.removeAttribute('src'); 
                 img.src = latestPost.image; 
                 img.onerror = function() { this.src = 'https://placehold.co/800x450?text=Loi+Anh'; };
-                
-                // Lưu ý: Nếu bạn đã dùng CSS tôi đưa ở bước trước thì KHÔNG cần dòng style.width='50%' này nữa
-                // Nhưng tôi cứ giữ lại theo code của bạn để đảm bảo hiện ảnh
                 img.style.display = 'block';
-                img.style.width = '50%'; // <-- Bạn có thể bỏ dòng này nếu đã dùng CSS chuẩn
+                // img.style.width = '50%'; // Đã xử lý bằng CSS
             }
 
             if (title) title.textContent = latestPost.title;
@@ -349,10 +366,10 @@ document.addEventListener("DOMContentLoaded", function() {
             links.forEach(a => a.href = `post.html?id=${latestPost.id}`);
         }
 
-        // --- 3. PHẦN MỚI THÊM: XỬ LÝ TIN CON (CHỈ CHỮ) ---
+        // --- 3. XỬ LÝ TIN CON (CHỈ CHỮ) ---
         const subItems = document.querySelectorAll('.sub-item');
         subItems.forEach((el, index) => {
-            // Lấy bài viết tiếp theo (index + 1) vì bài 0 đã dùng cho tin chính
+            // Lấy bài viết tiếp theo (index + 1)
             const subData = list[index + 1];
 
             if (subData) {
@@ -365,11 +382,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
                 if (desc) desc.textContent = subData.excerpt;
 
-                // Ẩn khung ảnh của tin con (nếu lỡ có) để đúng yêu cầu "chỉ có chữ"
                 const imgWrap = el.querySelector('.image-wrap');
                 if (imgWrap) imgWrap.style.display = 'none';
             } else {
-                // Nếu hết bài viết thì ẩn luôn ô đó đi
                 el.style.display = 'none';
             }
         });
