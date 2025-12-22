@@ -102,3 +102,323 @@ body{font-family:Arial,Helvetica,sans-serif;color:#222;margin:0;background:#fff}
 	.top-row .category-bar{order:1}
 	.category-bar .container{padding:8px 12px}
 }
+/* Container dải tin nóng */
+.breaking-ticker {
+    background: #e9ecef; /* Màu xám nhạt giống ảnh Bus Student */
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    overflow: hidden; /* Để ẩn phần chữ chạy thừa */
+    border-left: 5px solid #0b5ed7; /* Vạch xanh bên trái tạo điểm nhấn */
+}
+
+/* Chữ "Tin nóng:" cố định */
+.breaking-ticker b {
+    color: #d20100;
+    white-space: nowrap;
+    margin-right: 15px;
+    font-weight: bold;
+}
+
+/* Vùng chứa nội dung chữ chạy */
+#breakingList {
+    white-space: nowrap;
+    display: inline-block;
+    animation: marquee 20s linear infinite; /* Hiệu ứng chạy chữ */
+    color: #333;
+    font-size: 0.95rem;
+}
+
+/* Hiệu ứng chạy từ phải sang trái */
+@keyframes marquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
+/* Dừng chạy khi di chuột vào để người dùng kịp đọc */
+.breaking-ticker:hover #breakingList {
+    animation-play-state: paused;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    gap: 30px;
+    background: white;
+    padding: 20px;
+}
+
+/* Main Content */
+.main-content {
+    flex: 2;
+}
+
+.main-article {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.main-article img {
+    width: 200px !important;
+    height: 170px !important;
+    object-fit: cover;
+}
+
+.article-info h2 {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.article-info p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #666;
+}
+
+.sub-articles {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+}
+
+.sub-item h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.sub-item p {
+    font-size: 13px;
+    color: #777;
+    line-height: 1.5;
+}
+
+/* Sidebar */
+.sidebar {
+    flex: 1;
+    border-left: 1px solid #eee;
+    padding-left: 20px;
+}
+
+.tabs {
+    display: flex;
+    border-bottom: 2px solid #0056b3;
+    margin-bottom: 15px;
+}
+
+.tabs span {
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.tabs span.active {
+    color: #0056b3;
+}
+
+.news-list {
+    list-style: none;
+}
+
+.news-list li {
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.4;
+    position: relative;
+    padding-left: 15px;
+}
+
+.news-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #ccc;
+}
+
+.btn-more {
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    background: #f8f8f8;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    color: #888;
+}
+.image-wrap {
+    background-color: #ddd; /* Hiện nền xám nếu ảnh chưa load */
+    min-height: 200px;      /* Đảm bảo khung không bị xẹp về 0px */
+}
+
+.image-wrap img {
+    display: block !important; /* Ép buộc hiển thị */
+    width: 100%;
+    height: auto;
+}
+.image-wrap.loading {
+	background-color: #ccc; /* Màu nền khác khi đang load */
+}
+/* Ép buộc khung chứa ảnh có kích thước cố định */
+.main-article .image-wrap {
+    width: 100% !important;        /* Chiều rộng ăn theo cột */
+    max-width: 450px !important;   /* Không cho rộng quá 450px */
+    height: 280px !important;      /* Chiều cao CỐ ĐỊNH */
+    overflow: hidden !important;   /* Cắt bỏ phần thừa */
+    border-radius: 6px;
+    background: #000;              /* Nền đen để nhìn rõ ảnh hơn */
+    flex-shrink: 0;                /* Không cho khung bị co lại */
+}
+
+/* Ép ảnh phải nằm gọn trong khung (Cắt ảnh tự động) */
+.main-article .image-wrap img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;  /* QUAN TRỌNG: Cắt ảnh vừa khít khung, không bị méo */
+    object-position: center top !important; /* Ưu tiên lấy phần trên của ảnh */
+    margin: 0 !important;
+    display: block !important;
+}
+
+/* Chỉnh lại bố cục Flexbox để ảnh nằm bên trái, chữ bên phải */
+.main-article {
+    display: flex !important;
+    flex-direction: row !important; /* Xếp ngang */
+    align-items: flex-start !important;
+    gap: 10px !important;
+	margin-bottom: -60px;
+}
+
+/* Trên điện thoại thì cho ảnh nằm trên, chữ nằm dưới */
+@media (max-width: 768px) {
+    .main-article {
+        flex-direction: column !important;
+    }
+    .main-article .image-wrap {
+        max-width: 100% !important;
+        height: 220px !important;
+    }
+}
+/* --- ĐIỀU CHỈNH TỶ LỆ CỘT (Sidebar nhỏ lại) --- */
+
+/* 1. Cột nội dung chính: Tăng từ 2 lên 3 phần */
+.main-content {
+    flex: 3 !important; 
+}
+
+/* 2. Cột Tin mới (Sidebar): Giữ 1 phần nhưng giới hạn chiều rộng tối đa */
+.sidebar {
+    flex: 1 !important;
+    max-width: 280px !important; /* Giới hạn chiều rộng để nó không bị bè ra */
+    border-left: 1px solid #eee;
+    padding-left: 20px;
+}
+
+/* 3. Thu nhỏ ảnh trong danh sách tin mới một chút cho cân đối */
+.latest-list img {
+    width: 70px !important;  /* Giảm kích thước ảnh thumbnail */
+    height: 50px !important;
+}
+.latest-list a {
+    font-size: 13px !important; /* Giảm cỡ chữ một chút cho gọn */
+}
+/* --- FOOTER STYLES (Đã chỉnh sửa cho rõ nét hơn) --- */
+.site-footer {
+    background-color: #111827; /* Màu nền đen đậm hơn chút để chữ nổi bật */
+    color: #ab3e3e;            /* QUAN TRỌNG: Chuyển chữ thành màu trắng tinh */
+    padding: 50px 0 30px;
+    font-size: 15px;           /* Tăng kích thước chữ lên 1px cho dễ đọc */
+    line-height: 1.6;
+    border-top: 4px solid #d23;
+    text-align: center;
+}
+
+.site-footer .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* 1. Tên Báo - To và Rõ nhất */
+.site-footer p:first-child {
+    font-size: 24px;
+    font-weight: 900;          /* Tăng độ đậm lên mức tối đa */
+    color: #0d40cd;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* Thêm bóng nhẹ để chữ nổi lên khỏi nền */
+}
+
+/* 2. Cơ quan chủ quản */
+.site-footer p:nth-child(2) {
+    font-size: 17px;
+    font-weight: 700;          /* In đậm rõ ràng */
+    color: #000000;            /* Trắng khói */
+    margin-bottom: 25px;
+    position: relative;
+    display: inline-block;
+}
+
+/* Đường gạch chân trang trí */
+.site-footer p:nth-child(2)::after {
+    content: "";
+    display: block;
+    width: 80px;
+    height: 3px;               /* Dày hơn chút */
+    background: #d23;
+    margin: 15px auto 0;
+}
+
+/* 3. Các dòng thông tin liên hệ (Địa chỉ, SĐT...) */
+.site-footer p {
+    margin: 0;
+    color: #e5e7eb;            /* Màu trắng xám rất sáng (gần như trắng) */
+    font-weight: 500;          /* QUAN TRỌNG: Chữ dày hơn bình thường */
+}
+
+/* Làm nổi bật các icon (📍, 📞, 📧) */
+.site-footer p:nth-child(n+3):nth-child(-n+7) {
+    font-size: 15px;
+	color: #000;
+}
+
+/* 4. Khối Bản quyền & Pháp lý (3 dòng cuối) */
+.site-footer p:nth-last-child(-n+3) {
+    font-size: 13px;
+    color: #000000;            /* Màu xám nhẹ hơn 1 chút để phân cấp, nhưng vẫn rõ */
+    margin-top: 4px;
+    font-weight: 400;
+}
+
+/* Dòng "Nghiêm cấm sao chép..." */
+.site-footer p:last-child {
+    margin-top: 20px;
+    font-style: italic;
+    border-top: 1px solid #374151;
+    padding-top: 15px;
+    width: 100%;
+    color: #000000;            /* Màu sáng hơn bản cũ */
+}
