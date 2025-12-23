@@ -285,7 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   
   // 3. Render lưới chuyên mục (4 chuyên mục nổi bật)
-  renderCategoryGrid('categoryGrid', ['Kinh tế', 'Thế giới', 'Đời sống', 'Thể thao']);
+  renderCategoryGrid('categoryGrid', ['Kinh tế', 'Xã hội', 'Đời sống', 'Thời sự']);
 
   // 4. Các chức năng khác
   handleAdminForm();
