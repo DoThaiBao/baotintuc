@@ -1,5 +1,5 @@
 /* Simple responsive news style */
-:root{--accent:#d23;--muted:#777}
+:root{--accent:rgb(255, 255, 255);--muted:#777}
 *{box-sizing:border-box}
 body{font-family:Arial,Helvetica,sans-serif;color:#222;margin:0;background:#fff}
 .container{max-width:1080px;margin:0 auto;padding:20px}
@@ -92,7 +92,7 @@ body{font-family:Arial,Helvetica,sans-serif;color:#222;margin:0;background:#fff}
 .category-bar a:hover{background:#f0f0f0}
 
 /* Active category */
-.category-bar a.active{background:var(--accent);color:#fff;font-weight:700}
+.category-bar a.active{background:var(--accent);color:#e5d9d9;font-weight:700}
 
 @media(max-width:600px){.category-bar .container{padding:8px}.category-bar a{font-size:13px}}
 
